@@ -1,7 +1,6 @@
 #include "Hashing.h"
 #include <iostream>
 #include <string>
-#include <cmath>
 #define PRIME 31
 using namespace std;
 //Constructor
@@ -114,7 +113,10 @@ int Hash::getSize()
 {
     return size; //Returns the number of words
 }
-
+int Hash::getFreq(int pos) //Returns the frequency of a word
+{
+    return data[pos].freq;
+}
 ostream& operator<<(ostream& mystream,Hash& A)
 {
     //Prints all words in HashTable
