@@ -22,6 +22,7 @@ public:
     void Delete(string&); //Delete a word from the array
     void show(); //Print out all words of array with their frequency
     int getSize(); //Returns the size of the Array
+    int getFreq(int); //Returs the frequency of a word
 
     //Friendly operators
     friend ostream& operator<<(ostream&,UnorderedArray&);
