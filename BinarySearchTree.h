@@ -40,5 +40,6 @@ public:
     int getCount(string&); //Returns the frequency of a string
     node *findMin(); //Find node with minimum word(ASCII Value)
     node *findMax(); //Find node with maximum word(ASCII Value)
+    int getFreq(node*); //Returns the frequency of a node
 };
 #endif
