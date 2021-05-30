@@ -113,3 +113,7 @@ int UnorderedArray::getSize() //Returns the size of the array
 {
     return size;
 }
+int UnorderedArray::getFreq(int pos) //Returs the frequency of a word
+{
+    return Words[pos].freq;
+}
