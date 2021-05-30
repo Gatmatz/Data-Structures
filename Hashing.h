@@ -19,6 +19,7 @@ public:
     int HashSearch(string); //returns the position of a word
     void checkRehash(); //Checks if load_factor>0.5
     int getSize(); //returns the number of words in HashTable
+    int getFreq(int); //Returns the frequency of a word
     //Friendly operators
     friend ostream& operator<<(ostream&,Hash&);
 };
