@@ -221,3 +221,7 @@ node *BinarySearchTree::findMax(node* n)
     }
     return n; //Return the rightmost node
 }
+int BinarySearchTree::getFreq(node* n) //Returns the frequency of a node
+{
+    return n->word.freq;
+}
