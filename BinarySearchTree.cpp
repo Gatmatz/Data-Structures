@@ -6,7 +6,7 @@ BinarySearchTree::BinarySearchTree()
 {
     root=NULL; //Initialize root to null
 }
-void BinarySearchTree::insert(string& a,node* n) //Inserts a new node to its right place
+void BinarySearchTree::insert(string a,node* n) //Inserts a new node to its right place
 {
     if (a.compare(n->word.word)>=0) //If string is bigger than the node
     {
@@ -37,7 +37,7 @@ void BinarySearchTree::insert(string& a,node* n) //Inserts a new node to its rig
             insert(a,n->left);
     }
 }
-void BinarySearchTree::insert(string& a)
+void BinarySearchTree::insert(string a)
 {
     if (search(a)==NULL) //If word doesn't exist in tree
     {
@@ -61,7 +61,7 @@ void BinarySearchTree::insert(string& a)
 }
 
 
-node* BinarySearchTree::search(string &a,node* n)
+node* BinarySearchTree::search(string a,node* n)
 {
     if (n==NULL)
         return NULL; //If node is null then return
@@ -72,7 +72,7 @@ node* BinarySearchTree::search(string &a,node* n)
     else //if string is bigger
         return search(a,n->right); //Go to right child
 }
-node* BinarySearchTree::search(string& a)
+node* BinarySearchTree::search(string a)
 {
     return search(a,root); //Returns the node with this word
 }
@@ -131,7 +131,7 @@ void BinarySearchTree::DeleteNode(node *n)
         DeleteNode(min); //Delete minimum
     }
 }
-void BinarySearchTree::DeleteNode(string& a)
+void BinarySearchTree::DeleteNode(string a)
 {
     node *n=search(a); //Search the node with the desirable string
     if (n!=NULL) //If a node with that string was found
@@ -153,47 +153,47 @@ void BinarySearchTree::DeleteTree()
 }
 
 
-void BinarySearchTree::PrintPreorder(node* n)
+void BinarySearchTree::PrintPreorder(node* n,ostream &mystream)
 {
     if (n!=NULL) //If node exists
     {
-        cout<<n->word.word<<" - "<<n->word.freq<<endl; //Print the current node
-        PrintPreorder(n->left); //First go to left subtree
-        PrintPreorder(n->right); //And then to the right subtree
+        mystream<<n->word.word<<" - "<<n->word.freq<<endl; //Print the current node
+        PrintPreorder(n->left,mystream); //First go to left subtree
+        PrintPreorder(n->right,mystream); //And then to the right subtree
     }
 }
-void BinarySearchTree::PrintPreorder()
+void BinarySearchTree::PrintPreorder(ostream& mystream)
 {
-    PrintPreorder(root); //Start from root
+    PrintPreorder(root,mystream); //Start from root
 }
-void BinarySearchTree::PrintInorder(node* n)
+void BinarySearchTree::PrintInorder(node* n,ostream &mystream)
 {
     if (n!=NULL) //If root exists
     {
-        PrintInorder(n->left); //Start from left subtree
-        cout<<n->word.word<<" - "<<n->word.freq<<endl; //Print the current node
-        PrintInorder(n->right); //And then go to the right subtree
+        PrintInorder(n->left,mystream); //Start from left subtree
+        mystream<<n->word.word<<" - "<<n->word.freq<<endl; //Print the current node
+        PrintInorder(n->right,mystream); //And then go to the right subtree
     }
 }
-void BinarySearchTree::PrintInorder()
+void BinarySearchTree::PrintInorder(ostream& mystream)
 {
-    PrintInorder(root); //Start from root
+    PrintInorder(root,mystream); //Start from root
 }
-void BinarySearchTree::PrintPostorder(node* n)
+void BinarySearchTree::PrintPostorder(node* n,ostream& mystream)
 {
     if (n!=NULL) //If root exists
     {
-        PrintPostorder(n->left); //Start with left subtree
-        PrintPostorder(n->right); //Then go to right subtree
-        cout<<n->word.word<<" - "<<n->word.freq<<endl; //And then print current node
+        PrintPostorder(n->left,mystream); //Start with left subtree
+        PrintPostorder(n->right,mystream); //Then go to right subtree
+        mystream<<n->word.word<<" - "<<n->word.freq<<endl; //And then print current node
     }
 }
-void BinarySearchTree::PrintPostorder()
+void BinarySearchTree::PrintPostorder(ostream& mystream)
 {
-    PrintPostorder(root); //Start from root
+    PrintPostorder(root,mystream); //Start from root
 }
 
-int BinarySearchTree::getCount(string& a)
+int BinarySearchTree::getCount(string a)
 {
     return search(a)->word.freq; //Return the node's-that has been returned by the search-frequency
 }
