@@ -1,8 +1,17 @@
 #include "Hashing.h"
 #include <iostream>
 #include <string>
-#define PRIME 31
+#define PRIME 5381
 using namespace std;
+long int PRIMEtoPower(int &k)
+{
+    long int sum=0;
+    for (int i=0;i<k;i++)
+    {
+        sum*=PRIME;
+    }
+    return sum;
+}
 //Constructor
 Hash::Hash()
 {
@@ -18,21 +27,20 @@ Hash::Hash()
     load_factor=(float)(size/capacity); //load-factor=0
 }
 //Find index of string
-int Hash::hashkey(string a,int capacity)
+unsigned long Hash::hashkey(const char* a,int capacity)
 {
-    int i;
-    long int sum=0;
-    for (i=0;i<a.size();i++)
-    {
-        sum+=a[i]*PRIME;
-    }
-    sum%=capacity;
-    return sum;
+    unsigned long hash = 5381;
+    int c;
+
+    while (c = *a++)
+        hash = ((hash << 5) + hash) + c;
+
+    return hash%capacity;
 }
 //Other Functions
 int Hash::HashSearch(string key)
 {
-    int pos=hashkey(key,capacity); //Find the start position
+    int pos=hashkey(key.c_str(),capacity); //Find the start position
     while (data[pos].word!=".") //Until it finds an empty spot
     {
         if (data[pos].word==key) //Search the positions
@@ -41,13 +49,13 @@ int Hash::HashSearch(string key)
     }
     return -1; //If not found return -1
 }
-void Hash::insert(string &a)
+void Hash::insert(string a)
 {
     int pos=HashSearch(a); //Get the position of word
     int index;
     if (pos==-1) //if the word doesn't already exists in array
     {
-        index=hashkey(a,capacity); //Get the right position of the inserted word
+        index=hashkey(a.c_str(),capacity); //Get the right position of the inserted word
         while (data[index].word!=".") //Find free space
         {
             index=(index+1)%capacity;
@@ -71,12 +79,13 @@ void Hash::checkRehash()
     int i;
     if (load_factor>=0.5)
     {
+        int newcap=2*capacity;
         //Make a new HashTable with double the size
         int index;
         value *temp;
-        temp=new value[2*capacity];
+        temp=new value[newcap];
         //Initialize all positions to "."
-        for (i=0;i<2*capacity;i++)
+        for (i=0;i<newcap;i++)
         {
             temp[i].word=".";
             temp[i].freq=-1;
@@ -88,7 +97,7 @@ void Hash::checkRehash()
             if (data[i].word!=".")
             {
                 size++;
-                index=hashkey(data[i].word,2*capacity);
+                index=hashkey(data[i].word.c_str(),newcap);
                 while (temp[index].word!=".")
                 {
                     index=(index+1)%(2*capacity);
@@ -100,12 +109,7 @@ void Hash::checkRehash()
         }
         delete[] data;
         capacity*=2;
-        data=new value[capacity];
-        for (i=0;i<capacity;i++)
-        {
-            data[i]=temp[i];
-        }
-        delete[] temp;
+        data=temp;
         load_factor=(float)(size/capacity); //Update the load_factor
     }
 }
@@ -117,12 +121,17 @@ int Hash::getFreq(int pos) //Returns the frequency of a word
 {
     return data[pos].freq;
 }
+string Hash::operator[](int pos) //Returns word in that position
+{
+    return data[pos].word;
+}
 ostream& operator<<(ostream& mystream,Hash& A)
 {
     //Prints all words in HashTable
     for(int i=0;i<A.capacity;i++)
     {
         if (A.data[i].word!=".")
-            cout<<A.data[i].word<<"-"<<A.data[i].freq<<endl;
+            mystream<<A.data[i].word<<"-"<<A.data[i].freq<<endl;
     }
+    return mystream;
 }
