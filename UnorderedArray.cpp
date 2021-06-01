@@ -10,7 +10,7 @@ UnorderedArray::UnorderedArray()
     Rfactor=0; //Zero reallocations
 }
 //Functions
-int UnorderedArray::serialSearch(string &a)
+int UnorderedArray::serialSearch(string a)
 {
     int i,pos=-1; //Pos is the position of the word a in array
     for (i=0;i<size;i++) //Cross all elements of array
@@ -24,7 +24,7 @@ int UnorderedArray::serialSearch(string &a)
     return pos; //returns -1 if not found, otherwise the position of word
 
 }
-void UnorderedArray::insert(string &a)
+void UnorderedArray::insert(string a)
 {
     int pos=serialSearch(a);
     value *tmp;
@@ -71,7 +71,7 @@ void UnorderedArray::insert(string &a)
         Words[pos].freq++; //Increase the frequency by one since the word already exists in array
     }
 }
-void UnorderedArray::Delete(string &a)
+void UnorderedArray::Delete(string a)
 {
     int i,pos=serialSearch(a); //Position of the word in array
     if (pos!=-1) //Check if word exists in array
@@ -104,9 +104,10 @@ ostream& operator<<(ostream& mystream,UnorderedArray& A) //Prints out all words 
     int i;
     for (i=0;i<A.size;i++)
     {
-        cout<<A.Words[i].word<<" - "<<A.Words[i].freq<<endl;
+        mystream<<A.Words[i].word<<" - "<<A.Words[i].freq<<endl;
     }
-    cout<<A.size<<endl;
+    mystream<<A.size<<endl;
+    return mystream;
 }
 
 int UnorderedArray::getSize() //Returns the size of the array
