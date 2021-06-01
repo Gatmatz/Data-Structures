@@ -19,10 +19,6 @@ string fixWord(string &word) //Take out capital letters and punctuation
             checked.push_back(word[i]);
         }
     }
-    if (checked=="") //If word is empty
-    {
-        checked="NULL";
-    }
     return checked;
 }
 class Warray //class representing all words of text file
@@ -94,7 +90,7 @@ int main(int argc, const char * argv[])
         while(mystream>>word)
         {
             word=fixWord(word); //Take out all unnecessary characters
-            if (word!="NULL")
+            if (word.empty()==false)
                 Text.insert(word);
         }
     }
