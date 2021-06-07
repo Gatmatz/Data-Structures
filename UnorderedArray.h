@@ -15,7 +15,8 @@ private:
 public:
     //Constructor
     UnorderedArray();
-
+    //Destructor
+    ~UnorderedArray();
     //Functions
     int serialSearch(string); //Returns -1 if not found, otherwise the position of the word in array
     void insert(string); //Insert a word that hasn't been in array
