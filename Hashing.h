@@ -11,9 +11,11 @@ private:
     int size; //Size of words
     float load_factor; //Load factor size/capacity
 public:
-    unsigned long hashkey(const char*,int); //Linear Hashing with djb2 algorithm
+    unsigned long hashkey(string&,int); //Linear Hashing
     //Constructor
     Hash(); //Initial size of HashTable:1000
+    //Destructor
+    ~Hash();
     //Other Functions
     void insert(string); //insert word in hashtable
     int HashSearch(string); //returns the position of a word
@@ -25,5 +27,5 @@ public:
     friend ostream& operator<<(ostream&,Hash&);
 };
 //Operators
-ostream& operator<<(ostream&,Hash&);
+ostream& operator<<(ostream&,Hash&); //Prints all words in HashTable
 #endif
