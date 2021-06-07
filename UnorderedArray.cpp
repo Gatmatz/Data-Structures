@@ -9,6 +9,11 @@ UnorderedArray::UnorderedArray()
     size=0; //Size of words is 0
     Rfactor=0; //Zero reallocations
 }
+//Destructor
+UnorderedArray::~UnorderedArray()
+{
+    delete[] Words;
+}
 //Functions
 int UnorderedArray::serialSearch(string a)
 {
@@ -56,7 +61,7 @@ void UnorderedArray::insert(string a)
                 size++;
                 Rfactor++;
             }
-            else
+            else //If Array does not need a reallocation then insert the word to it's first empty position
             {
                 Words[size].word=a;
                 Words[size].freq=1;
@@ -76,17 +81,17 @@ void UnorderedArray::Delete(string a)
     int i,pos=serialSearch(a); //Position of the word in array
     if (pos!=-1) //Check if word exists in array
     {
-        //Realloc Words and count Arrays- decrease by one
-        int k=0; //New counter k for correct indexing the temporary arrays
+        //Realloc Words Array- decrease by one
+        int k=0; //New counter k for correct indexing the temporary array
         value *tmp;
         tmp=new value[size-1];
-        //Insert all words and counts before the desired deleted position
+        //Insert all data before the desired deleted position
         for (i=0;i<pos;i++)
         {
             tmp[k]=Words[i];
             k++;
         }
-        //Insert all words and counts after the desired deleted position
+        //Insert all data after the desired deleted position
         for (i=pos+1;i<size;i++)
         {
             tmp[k]=Words[i];
@@ -114,7 +119,7 @@ int UnorderedArray::getSize() //Returns the size of the array
 {
     return size;
 }
-int UnorderedArray::getFreq(int pos) //Returs the frequency of a word
+int UnorderedArray::getFreq(int pos) //Returns the frequency of a word
 {
     return Words[pos].freq;
 }
