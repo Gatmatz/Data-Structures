@@ -3,15 +3,6 @@
 #include <string>
 #define PRIME 5381
 using namespace std;
-long int PRIMEtoPower(int &k)
-{
-    long int sum=0;
-    for (int i=0;i<k;i++)
-    {
-        sum*=PRIME;
-    }
-    return sum;
-}
 //Constructor
 Hash::Hash()
 {
@@ -24,23 +15,27 @@ Hash::Hash()
         data[i].word=".";
         data[i].freq=-1;
     }
-    load_factor=(float)(size/capacity); //load-factor=0
+    load_factor=(float)(size/capacity); //load_factor=0
+}
+//Destructor
+Hash::~Hash()
+{
+    delete[] data;
 }
 //Find index of string
-unsigned long Hash::hashkey(const char* a,int capacity)
+unsigned long Hash::hashkey(string& a,int capacity)
 {
-    unsigned long hash = 5381;
-    int c;
-
-    while (c = *a++)
-        hash = ((hash << 5) + hash) + c;
-
-    return hash%capacity;
+    unsigned long index = PRIME; //Prime is 5381 (Seems to have fewer collisions)
+    for (int i=0;i<a.size();i++)
+    {
+        index+=index*33 +a[i]; //Evaluate the sum of hash*33 plus every character in string
+    }
+    return index%capacity; //Evaluate the hash key for the string and return it
 }
 //Other Functions
 int Hash::HashSearch(string key)
 {
-    int pos=hashkey(key.c_str(),capacity); //Find the start position
+    int pos=hashkey(key,capacity); //Find the start position
     while (data[pos].word!=".") //Until it finds an empty spot
     {
         if (data[pos].word==key) //Search the positions
@@ -53,9 +48,11 @@ void Hash::insert(string a)
 {
     int pos=HashSearch(a); //Get the position of word
     int index;
+    if (a=="")
+        return;
     if (pos==-1) //if the word doesn't already exists in array
     {
-        index=hashkey(a.c_str(),capacity); //Get the right position of the inserted word
+        index=hashkey(a,capacity); //Get the right position of the inserted word
         while (data[index].word!=".") //Find free space
         {
             index=(index+1)%capacity;
@@ -79,7 +76,7 @@ void Hash::checkRehash()
     int i;
     if (load_factor>=0.5)
     {
-        int newcap=2*capacity;
+        int newcap=2*capacity; //Variable that keeps the doubled capacity
         //Make a new HashTable with double the size
         int index;
         value *temp;
@@ -97,7 +94,7 @@ void Hash::checkRehash()
             if (data[i].word!=".")
             {
                 size++;
-                index=hashkey(data[i].word.c_str(),newcap);
+                index=hashkey(data[i].word,newcap);
                 while (temp[index].word!=".")
                 {
                     index=(index+1)%(2*capacity);
