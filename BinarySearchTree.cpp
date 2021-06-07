@@ -6,7 +6,12 @@ BinarySearchTree::BinarySearchTree()
 {
     root=NULL; //Initialize root to null
 }
-void BinarySearchTree::insert(string a,node* n) //Inserts a new node to its right place
+//Destructors
+BinarySearchTree::~BinarySearchTree()
+{
+    DeleteTree(root);
+}
+void BinarySearchTree::insert(string& a,node* n) //Inserts a new node to its right place
 {
     if (a.compare(n->word.word)>=0) //If string is bigger than the node
     {
@@ -37,7 +42,7 @@ void BinarySearchTree::insert(string a,node* n) //Inserts a new node to its righ
             insert(a,n->left);
     }
 }
-void BinarySearchTree::insert(string a)
+void BinarySearchTree::insert(string& a)
 {
     if (search(a)==NULL) //If word doesn't exist in tree
     {
@@ -61,7 +66,7 @@ void BinarySearchTree::insert(string a)
 }
 
 
-node* BinarySearchTree::search(string a,node* n)
+node* BinarySearchTree::search(string& a,node* n)
 {
     if (n==NULL)
         return NULL; //If node is null then return
@@ -72,7 +77,7 @@ node* BinarySearchTree::search(string a,node* n)
     else //if string is bigger
         return search(a,n->right); //Go to right child
 }
-node* BinarySearchTree::search(string a)
+node* BinarySearchTree::search(string& a)
 {
     return search(a,root); //Returns the node with this word
 }
@@ -131,7 +136,7 @@ void BinarySearchTree::DeleteNode(node *n)
         DeleteNode(min); //Delete minimum
     }
 }
-void BinarySearchTree::DeleteNode(string a)
+void BinarySearchTree::DeleteNode(string& a)
 {
     node *n=search(a); //Search the node with the desirable string
     if (n!=NULL) //If a node with that string was found
@@ -193,7 +198,7 @@ void BinarySearchTree::PrintPostorder(ostream& mystream)
     PrintPostorder(root,mystream); //Start from root
 }
 
-int BinarySearchTree::getCount(string a)
+int BinarySearchTree::getCount(string& a)
 {
     return search(a)->word.freq; //Return the node's-that has been returned by the search-frequency
 }
