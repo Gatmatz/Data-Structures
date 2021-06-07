@@ -12,31 +12,31 @@ string fixWord(string &word) //Take out capital letters and punctuation
     string checked;
     for (i=0;i<word.size();i++)
     {
-        if (word[i]>=65 && word[i]<=90)
-            checked.push_back(word[i]+32);
-        if (word[i]>=97 && word[i]<=122)
+        if (word[i]>=65 && word[i]<=90) //If letter is uppercase
+            checked.push_back(word[i]+32); //Then replace it with its lowercase
+        if (word[i]>=97 && word[i]<=122) //If letter is lowercase
         {
-            checked.push_back(word[i]);
+            checked.push_back(word[i]); //Add it to the final word
         }
     }
-    return checked;
+    return checked; //Return final word
 }
-class Warray //class representing all words of text file
+class Query //class representing a string set
 {
 private:
     string *W;
-    int count; //The number of words
-    int size; //The capacity of the string Array
+    long long count; //The number of words
+    long long size; //The capacity of the string Array
 public:
     //Constructor
-    Warray(int size) //Initialize the array to "size" capacity
+    Query(long long size) //Initialize the array to 1000 capacity
     {
         W=new string[size];
         this->size=size;
         count=0;
     }
     //Other functions
-    void insert(string& a)
+    void insert(string a)
     {
         if (count+1==size) //If size is not enough
         { //Then realloc to double the size
@@ -48,37 +48,39 @@ public:
             }
             delete[] W;
             W=temp;
+
             size*=2;
-            count++;
             W[count]=a;
+            count++;
         }
         else
         {
-            count++;
             W[count]=a;
+            count++;
         }
     }
     int getCount() //Returns the number of words in text
     {
         return count;
     }
-    string& operator[](int pos) //Overload [] to have easy access to words
+    string& operator[](int pos) //Operator overload that returns the value to a specific position
     {
         return W[pos];
     }
 };
 int main(int argc, const char * argv[])
 {
-    Warray Text(1000); //Initialize to 1000 capacity
     UnorderedArray A; //An Unordered Array A
     BinarySearchTree B; //A Binary Search Tree B
     Hash C; //A Hash Table C
+    long long nofWords=0; //Variable that counts the words from text file
     ofstream results; //A stream to write the results to a text file
     results.open("../results.txt",ios::out); //The textfile will be named as: results.txt
     string word; //A string variable for reading from text file
+    string filename="../small-file.txt"; //Filename variable to read a text file
     ifstream mystream;
-    mystream.open("../gutenberg.txt",ios::in); //Open the file
-    chrono::steady_clock read; //Initialize a chrono class variable
+    mystream.open(filename,ios::in); //Open the file
+    chrono::high_resolution_clock read; //Initialize a chrono class variable
     auto start=read.now(); //Keep the read start time
     if (!(mystream.is_open()))
     {
@@ -91,100 +93,106 @@ int main(int argc, const char * argv[])
         {
             word=fixWord(word); //Take out all unnecessary characters
             if (word.empty()==false)
-                Text.insert(word);
+            {
+                A.insert(word); //Insert words to Unordered Array
+                B.insert(word); //Insert words to Binary Search Tree
+                C.insert(word); //Insert words to Hash Table
+                nofWords++; //Increase by 1 the counter that counts the number of words
+            }
         }
     }
     auto end=read.now(); //Keep the read finish time
-    auto time_span=static_cast<chrono::duration<double>>(end - start); //Evaluate the time needed
+    auto time_span=chrono::duration_cast<chrono::seconds>(end - start); //Evaluate the time needed
     results<<"Read time of Text file took:"<<time_span.count()<<" seconds."<<endl; //Write the result to output text file
     mystream.close(); //Close text file
 
-    //Reading
-    chrono::steady_clock Unordered; //Create a chrono class variable for each structure
-    chrono::steady_clock BST;
-    chrono::steady_clock HashT;
-    //Unordered Array
-    auto sUnordered=Unordered.now(); //Keep the Unordered Array read start time
-    for (int i=0;i<Text.getCount();i++)
-    {
-        A.insert(Text[i]);
-    }
-    auto eUnordered=Unordered.now(); //Keep the Unordered Array read finish time
-    auto span_Unordered=static_cast<chrono::duration<double>>(eUnordered - sUnordered); //Evaluate the time needed
-    results<<"Read time of Unordered Array took:"<<span_Unordered.count()<<" seconds."<<endl; //Write the result to output text file
-
-    //Binary Search Tree
-    auto sBST=BST.now(); //Keep the BST read start time
-    for (int i=0;i<Text.getCount();i++)
-    {
-        B.insert(Text[i]);
-    }
-    auto eBST=BST.now(); //Keep the BST read finish time
-    auto span_BST=static_cast<chrono::duration<double>>(eBST - sBST); //Evaluate the time needed
-    results<<"Read time of Binary Search Tree took:"<<span_BST.count()<<" seconds."<<endl; //Write the result to output text file
-
-    //Hash Table
-    auto sHashT=HashT.now(); //Keep the Hash Table read start time
-    for (int i=0;i<Text.getCount();i++)
-    {
-        C.insert(Text[i]);
-    }
-    auto eHashT=HashT.now(); //Keep the Hash Table read finish time
-    auto span_HashT=static_cast<chrono::duration<double>>(eHashT - sHashT); //Evaluate the time needed
-    results<<"Read time of Hash Table took:"<<span_HashT.count()<<" seconds."<<endl; //Write the result to output text file
-
-    //Search
-
     //Define the size of set Q
-    int Qsize;
+    long long Qsize; //Initialize Query size
     srand(time(NULL)); //Mix up the rand() function
-    //Qsize=rand() % Text.getCount(); //If you want random Qsize
-    Qsize=1000; //Fixed 1000 Qsize
-    results<<"The random set of Q consists of:"<<Qsize<<" words."<<endl; //Inform the Qsize
-
+    Qsize=1000; //Fixed Qsize size
+    results<<"The random set of Q consists of:"<<Qsize<<" words."<<endl; //Inform for the Qsize
+    results<<"Number of Words is:"<<nofWords<<endl; //Inform for the number of Words in the text file
     //Fill in Q set
-    string *Q;
-    Q=new string[Qsize];
-    int rnum;
-    for (int i=0;i<Qsize;i++)
+    Query Q(Qsize); //Create Query with size Qsize
+    long long count=0; //Variable that counts the number of Words that have been read
+    long long randomstep; //Random step variable for picking words from text file
+    do
     {
-        rnum=rand()%Qsize;
-        Q[i]=Text[rnum];
+        randomstep=rand(); //Generate random step
+        while (Qsize*randomstep<(nofWords*75)/100) //If random step is too small for picking from whole text file
+        {
+            randomstep*=2; //Double the random step
+        }
+        while (Qsize*randomstep>nofWords) //If random step is too big for text file
+        {
+            randomstep/=2; //Then divide by 2 the random step
+        }
     }
+    while (Qsize*randomstep>=nofWords || Qsize*randomstep<=(nofWords*75)/100); //Finally pick a random step that will at least pick words from the 75% of the text file
+    results<<"The random step is set to:"<<randomstep<<"."<<endl; //Inform about the random step
+    mystream.open(filename,ios::in); //Open the file
+    if (!(mystream.is_open()))
+    {
+        cout<<"File Error!"<<endl;
+        exit(1);
+    }
+    else
+    {
+        while(mystream>>word)
+        {
+            word=fixWord(word); //Take out all unnecessary characters
+            if (word.empty()==false)
+            {
+                if (count == randomstep * Q.getCount()) //Choose word based on the random step
+                {
+                    if (Q.getCount() > Qsize) //Stop picking when you reach the Qsize
+                        break;
+                    Q.insert(word); //Insert the word to Query
+                }
+                count++; //Increase by 1 the counter that counts the number of words that have been read
+            }
+        }
+    }
+    using namespace std::chrono;
+    //Search
+    high_resolution_clock Unordered; //Create a chrono class variable for each structure
+    high_resolution_clock BST;
+    high_resolution_clock HashT;
 
     //Unordered Array
-    sUnordered=Unordered.now(); //Keep the Unordered Array search start time
+    auto sUnordered=Unordered.now(); //Keep the Unordered Array search start time
     for (int i=0;i<Qsize;i++)
     {
-        results<<"Word:<"<<Q[i]<<"> has been in text for: "<<A.getFreq(A.serialSearch(Q[i]))<<" times."<<endl;
+        results<<"Word:<"<<Q[i]<<"> has been in text for: "<<A.getFreq(A.serialSearch(Q[i]))<<" times."<<endl; //Execute and print the search
     }
-    eUnordered=Unordered.now(); //Keep the Unordered Array search finish time
-    span_Unordered=static_cast<chrono::duration<double>>(eUnordered - sUnordered); //Evaluate the time needed
+    auto eUnordered=Unordered.now(); //Keep the Unordered Array search finish time
+    auto span_Unordered=duration_cast<milliseconds>(eUnordered - sUnordered); //Evaluate the time needed
 
 
     //Binary Search Tree
-    sBST=BST.now(); //Keep the BST search start time
+    auto sBST=BST.now(); //Keep the BST search start time
     for (int i=0;i<Qsize;i++)
     {
-        results<<"Word:<"<<Q[i]<<"> has been in text for: "<<B.getFreq(B.search(Q[i]))<<" times."<<endl;
+        results<<"Word:<"<<Q[i]<<"> has been in text for: "<<B.getFreq(B.search(Q[i]))<<" times."<<endl; //Execute and print the search
     }
-    eBST=BST.now(); //Keep the BST search finish time
-    span_BST=static_cast<chrono::duration<double>>(eBST - sBST); //Evaluate the time needed
+    auto eBST=BST.now(); //Keep the BST search finish time
+    auto span_BST=duration_cast<milliseconds>(eBST - sBST); //Evaluate the time needed
 
 
     //Hash Table
-    sHashT=HashT.now(); //Keep the Hash Table search start time
+    auto sHashT=HashT.now(); //Keep the Hash Table search start time
     for (int i=0;i<Qsize;i++)
     {
-        results<<"Word:<"<<Q[i]<<"> has been in text for: "<<C.getFreq(C.HashSearch(Q[i]))<<" times."<<endl;
+        results<<"Word:<"<<Q[i]<<"> has been in text for: "<<C.getFreq(C.HashSearch(Q[i]))<<" times."<<endl; //Execute and print the search
     }
-    eHashT=HashT.now(); //Keep the Hash Table search finish time
-    span_HashT=static_cast<chrono::duration<double>>(eHashT - sHashT); //Evaluate the time needed
+    auto eHashT=HashT.now(); //Keep the Hash Table search finish time
+    auto span_HashT=duration_cast<milliseconds>(eHashT - sHashT); //Evaluate the time needed
+
 
     //Write the search results to output text file
-    results<<"Search time of "<<Qsize<<" words in Unordered Array took:"<<span_Unordered.count()<<" seconds."<<endl;
-    results<<"Search time of "<<Qsize<<" words in Binary Search Tree took:"<<span_BST.count()<<" seconds."<<endl;
-    results<<"Search time of "<<Qsize<<" words in Hash Table took:"<<span_HashT.count()<<" seconds."<<endl;
+    results<<"Search time of "<<Qsize<<" words in Unordered Array took:"<<span_Unordered.count()<<" milliseconds."<<endl;
+    results<<"Search time of "<<Qsize<<" words in Binary Search Tree took:"<<span_BST.count()<<" milliseconds."<<endl;
+    results<<"Search time of "<<Qsize<<" words in Hash Table took:"<<span_HashT.count()<<" milliseconds."<<endl;
 
     results.close(); //Close output text file
 }
