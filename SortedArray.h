@@ -24,7 +24,7 @@ public:
     int search(string); //Returns the position of the word in the array, -1 else using binary search
     void insert(string); //Inserts word in array
     void deleteArr(string); //Deletes word from array
-    void print(); //Prints all words in the array and their frequency alphabetically
+    void print(ostream&); //Prints all words in the array and their frequency alphabetically
     int getSize(); //returns size of array
     int getFreq(int); //returns frequency of word
 
