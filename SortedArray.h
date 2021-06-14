@@ -3,7 +3,7 @@
 #include <iostream>
 #include <cstring>
 #include <fstream>
-#include "struct_value.h"
+#include "Struct Value.h"
 
 using namespace std;
 
