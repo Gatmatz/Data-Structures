@@ -123,3 +123,11 @@ int UnorderedArray::getFreq(int pos) //Returns the frequency of a word
 {
     return Words[pos].freq;
 }
+
+void UnorderedArray::show(ostream &mystream)
+{
+    for (int i=0;i<size;i++)
+    {
+        mystream<<Words[i].word<<" - "<<Words[i].freq<<endl;
+    }
+}
