@@ -5,6 +5,8 @@
 #include "UnorderedArray.h"
 #include "BinarySearchTree.h"
 #include "Hashing.h"
+#include "Avltree.h"
+#include "SortedArray.h"
 using namespace std;
 string fixWord(string &word) //Take out capital letters and punctuation
 {
@@ -73,6 +75,8 @@ int main(int argc, const char * argv[])
     UnorderedArray A; //An Unordered Array A
     BinarySearchTree B; //A Binary Search Tree B
     Hash C; //A Hash Table C
+    Avltree D; //An AVL Tree D
+    SortedArray E; //A sorted array E
     long long nofWords=0; //Variable that counts the words from text file
     ofstream results; //A stream to write the results to a text file
     results.open("../results.txt",ios::out); //The textfile will be named as: results.txt
@@ -97,6 +101,8 @@ int main(int argc, const char * argv[])
                 A.insert(word); //Insert words to Unordered Array
                 B.insert(word); //Insert words to Binary Search Tree
                 C.insert(word); //Insert words to Hash Table
+                D.insert(word); //Insert words to AVL
+                E.insert(word); //Insert words to Sorted Array
                 nofWords++; //Increase by 1 the counter that counts the number of words
             }
         }
@@ -158,6 +164,8 @@ int main(int argc, const char * argv[])
     high_resolution_clock Unordered; //Create a chrono class variable for each structure
     high_resolution_clock BST;
     high_resolution_clock HashT;
+    high_resolution_clock AVL;
+    high_resolution_clock Sorted;
 
     //Unordered Array
     auto sUnordered=Unordered.now(); //Keep the Unordered Array search start time
@@ -187,12 +195,34 @@ int main(int argc, const char * argv[])
     }
     auto eHashT=HashT.now(); //Keep the Hash Table search finish time
     auto span_HashT=duration_cast<milliseconds>(eHashT - sHashT); //Evaluate the time needed
+    
+    
+    //AVL Tree
+    auto sAVL=AVL.now(); //Keep the AVL Tree search start time
+    for (int i=0;i<Qsize;i++)
+    {
+        results<<"Word:<"<<Q[i]<<"> has been in text for: "<<D.getNodeFreq(D.search(Q[i]))<<" times."<<endl; //Execute and print the search
+    }
+    auto eAVL=AVL.now(); //Keep the AVL Tree search finish time
+    auto span_AVL=duration_cast<milliseconds>(eAVL - sAVL); //Evaluate the time needed
+
+    
+    //Sorted Array
+    auto sSorted=Sorted.now(); //Keep the Sorted Array search start time
+    for (int i=0;i<Qsize;i++)
+    {
+        results<<"Word:<"<<Q[i]<<"> has been in text for: "<<E.getFreq(E.search(Q[i]))<<" times."<<endl; //Execute and print the search
+    }
+    auto eSorted=Sorted.now(); //Keep the Sorted Array search finish time
+    auto span_Sorted=duration_cast<milliseconds>(eSorted - sSorted); //Evaluate the time needed
 
 
     //Write the search results to output text file
     results<<"Search time of "<<Qsize<<" words in Unordered Array took:"<<span_Unordered.count()<<" milliseconds."<<endl;
     results<<"Search time of "<<Qsize<<" words in Binary Search Tree took:"<<span_BST.count()<<" milliseconds."<<endl;
     results<<"Search time of "<<Qsize<<" words in Hash Table took:"<<span_HashT.count()<<" milliseconds."<<endl;
+    results<<"Search time of "<<Qsize<<" words in AVL Tree took:"<<span_AVL.count()<<" milliseconds."<<endl;
+    results<<"Search time of "<<Qsize<<" words in Sorted Array took:"<<span_Sorted.count()<<" milliseconds."<<endl;
 
     results.close(); //Close output text file
 }
