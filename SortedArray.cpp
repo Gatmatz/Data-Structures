@@ -120,3 +120,9 @@ int SortedArray::getFreq(int pos) //Returns the frequency of a word
 {
     return arr[pos].freq;
 }
+
+void SortedArray::print(ostream& o) //prints all words and their frequency
+{
+    for (int i=0; i<size; i++)
+        o<<arr[i].word<<" - "<<arr[i].freq<<endl;
+}
