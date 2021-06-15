@@ -24,7 +24,7 @@ node* Avltree::insert(string & s, node* n)
             getheight(n->right); //sets height to 1;
         }
         else
-            insert(s, n->right); //if it's not, check the right child
+            n->right=insert(s, n->right); //if it's not, check the right child
     }
     else //if it's smaller than the node
     {
@@ -39,28 +39,28 @@ node* Avltree::insert(string & s, node* n)
             getheight(n->left);
         }
         else
-            insert(s, n->left); //if it's not, check the left child
+            n->left=insert(s, n->left); //if it's not, check the left child
     }
-    int balance=getBalance(n); //updates balance
     
+    int balance=getBalance(n); //updates balance
+    //cout<<n->word.word<<" - "<<balance<<endl;
     //cases if node is unbalanced
-    if(balance>1 && s<n->word.word)//s.compare(n->word.word)<0) //left rotate
+    if(balance>1 && s < n->left->word.word)//s.compare(n->word.word)<0) //left rotate
         return rightRotate(n);
-    if(balance<-1 && s>n->word.word)//s.compare(n->word.word)>=0) //right rotate
+    if(balance<-1 && s > n->right->word.word)//s.compare(n->word.word)>=0) //right rotate
         return leftRotate(n);
-    if(balance>1 && s>n->word.word)//s.compare(n->word.word)>=0) //left right rotate
+    if(balance>1 && s > n->left->word.word)//s.compare(n->word.word)>=0) //left right rotate
     {
         n->left=leftRotate(n->left);
         return rightRotate(n);
     }
-    if (balance<-1 && s<n->word.word)//s.compare(n->word.word)<0)//right left rotate
+    if (balance<-1 && s < n->right->word.word)//s.compare(n->word.word)<0)//right left rotate
     {
         n->right=rightRotate(n->right);
         return leftRotate(n);
     } 
     
     return n; //if balanced return unchanged node
-
 }
 
 void Avltree::insert(string & s)
@@ -155,7 +155,32 @@ void Avltree::deleteNode (node* n)
         n->word=min->word; //replace node's value with minimum
         deleteNode(min); //delete minimum
     }
+
+    int balance=getBalance(root); //updates balance
+    cout<<balance<<endl;
+    //cases if node is unbalanced
+    if(balance>1)
+    {
+        if (getBalance(root->left)>=0)
+            rightRotate(root);
+        else
+        {
+            root->left=leftRotate(root->left);
+            rightRotate(root);
+        }
+    }
+    if (balance<-1)
+    {
+        if (getBalance(root->right)<=0)
+            leftRotate(root);
+        else
+        {
+            root->right=rightRotate(root->right);
+            leftRotate(root);
+        }
+    }
 }
+
 void Avltree::deleteNode (string & s)
 {
     node *n=search(s); //find the node with the s string
@@ -257,31 +282,41 @@ int max(int a, int b)
 
 node* Avltree::leftRotate(node* n)
 {
-    node *p=n;
-    node *temp=p->left;
+    if (n==root)
+       { 
+           //cout<<"Root changed from "<<root->word.word<<" to "<<n->right->word.word<<endl;
+           root=n->right;
+        }
+    node *t=n->right;
+    node *t2=t->left;
 
-    p->left=temp->right;
-    temp->right=p;
-    
-    return temp;
+    t->left=n;
+    n->right=t2;
+
+    return t;
 }
 
 node* Avltree::rightRotate(node* n)
 {
-    node *p=n;
-    node *temp=p->right;
+    if (n==root)
+        {
+            //cout<<"Root changed from "<<root->word.word<<" to "<<n->left->word.word<<endl;
+            root=n->left;
+        }
+    node *t=n->left;
+    node *t2=t->right;
 
-    p->right=temp->left;
-    temp->left=p;
+    t->right=n;
+    n->left=t2;
 
-    return temp;
+    return t;
 }
 
 int Avltree::getheight(node* n)
 {
     if (n==NULL)
         return 0;
-    int left, right;
+    int left=0, right=0;
     left=1+getheight(n->left);
     right=1+getheight(n->right);
     return left>right?left:right;
@@ -294,7 +329,7 @@ int Avltree::getheight()
 int Avltree::getBalance(node* n)
 {
     if(n!=NULL)//if node exists
-        return (abs(getheight(n->left)-getheight(n->right))<=1 && getBalance(n->left) && getBalance(n->right));
+        return (getheight(n->left)-getheight(n->right));
     return 0;
 }
 int Avltree::getBalance()
