@@ -203,7 +203,6 @@ int main(int argc, const char * argv[])
     }
     auto eAVL=AVL.now(); //Keep the AVL Tree search finish time
     auto span_AVL=duration_cast<milliseconds>(eAVL - sAVL); //Evaluate the time needed
-    D.inorder(results);
 
     //Hash Table
     auto sHashT=HashT.now(); //Keep the Hash Table search start time
