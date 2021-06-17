@@ -193,7 +193,7 @@ int main(int argc, const char * argv[])
     }
     auto eBST=BST.now(); //Keep the BST search finish time
     auto span_BST=duration_cast<milliseconds>(eBST - sBST); //Evaluate the time needed
-    */
+    
 
     //AVL Tree
     auto sAVL=AVL.now(); //Keep the AVL Tree search start time
