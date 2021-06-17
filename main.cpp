@@ -5,7 +5,7 @@
 #include "UnorderedArray.h"
 #include "BinarySearchTree.h"
 #include "Hashing.h"
-#include "Avltree.h"
+#include "AvlTree.h"
 #include "SortedArray.h"
 using namespace std;
 string fixWord(string &word) //Take out capital letters and punctuation
