@@ -7,7 +7,7 @@
 
 using namespace std;
 
-//Sorted array structure. Accepts words and number of appearances for each word and stores them alphabetically. 
+//Sorted array structure. Accepts words and number of appearances for each word and stores them alphabetically.
 //Supports: add/delete element and search for element
 
 class SortedArray
