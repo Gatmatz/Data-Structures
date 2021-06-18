@@ -19,9 +19,9 @@ node* Avltree::insert(string & s, node* n)
             n->right->word.word=s; //inserts word s
             n->right->word.freq=1; //sets frequency to 1
             n->right->left=NULL; //sets left child to NULL
-            n->right->right=NULL; //sets right child to NULL 
+            n->right->right=NULL; //sets right child to NULL
             n->right->parent=n; //makes n its parent
-            getheight(n->right); //sets height to 1;
+            //getHeight(n->right); //sets height to 1;
         }
         else
             n->right=insert(s, n->right); //if it's not, check the right child
@@ -34,55 +34,53 @@ node* Avltree::insert(string & s, node* n)
             n->left->word.word=s; //inserts word s
             n->left->word.freq=1; //sets frequency to 1
             n->left->right=NULL; //sets left child to NULL
-            n->left->left=NULL; //sets right child to NULL 
+            n->left->left=NULL; //sets right child to NULL
             n->left->parent=n; //makes n its parent
-            getheight(n->left);
+            getHeight(n->left);
         }
         else
             n->left=insert(s, n->left); //if it's not, check the left child
     }
-    
+
     int balance=getBalance(n); //updates balance
-    //cout<<n->word.word<<" - "<<balance<<endl;
     //cases if node is unbalanced
-    if(balance>1 && s < n->left->word.word)//s.compare(n->word.word)<0) //left rotate
+    if(balance>1 && s < n->left->word.word) //left rotate
         return rightRotate(n);
-    if(balance<-1 && s > n->right->word.word)//s.compare(n->word.word)>=0) //right rotate
+    if(balance<-1 && s > n->right->word.word) //right rotate
         return leftRotate(n);
-    if(balance>1 && s > n->left->word.word)//s.compare(n->word.word)>=0) //left right rotate
+    if(balance>1 && s > n->left->word.word) //left right rotate
     {
         n->left=leftRotate(n->left);
         return rightRotate(n);
     }
-    if (balance<-1 && s < n->right->word.word)//s.compare(n->word.word)<0)//right left rotate
+    if (balance<-1 && s < n->right->word.word) //right left rotate
     {
         n->right=rightRotate(n->right);
         return leftRotate(n);
-    } 
-    
+    }
+
     return n; //if balanced return unchanged node
 }
 
 void Avltree::insert(string & s)
 {
-    if (search(s)==NULL)
+    if (search(s)==NULL) //If word hasn't been inserted
     {
-        if (root==NULL)
+        if (root==NULL) //If the tree is empty
         {
-          //  node* n=new node; //creates new node;
-            root=new node;
+            root=new node; //Create a new root
             root->word.word=s; //sets word of the node to s
             root->word.freq=1; //sets frequency to 1
             root->left=NULL; //sets left child to NULL
             root->right=NULL; //sets right child to NULL
-            root->parent=NULL;
-            getheight(root); //sets height of the tree
+            root->parent=NULL; //sets parent to NULL
+            getHeight(root); //sets height of the tree
         }
         else
-            insert(s, root);
+            insert(s, root); //Call the private insert starting from root
     }
-    else
-        search(s)->word.freq++;
+    else //If word has been inserted
+        search(s)->word.freq++; //Increase the frequency by one
 }
 
 node* Avltree::search(string & s, node* n)
@@ -93,7 +91,7 @@ node* Avltree::search(string & s, node* n)
         return n;
     if (s.compare(n->word.word)<0) //if string is smaller alphabetically go to left child
         return search (s, n->left);
-    return search (s, n->right); //if string is bigger alphabetically go to left child
+    return search (s, n->right); //if string is bigger alphabetically go to right child
 
 }
 node* Avltree::search(string & s)
@@ -103,89 +101,15 @@ node* Avltree::search(string & s)
 
 void Avltree::deleteNode (node* n)
 {
-    node* par=n->parent; //new node that stores deleted node's parent
-    if (n->left==NULL && n->right==NULL)//if the node has no children
-    {
-        if (par==NULL) //if node is root
-        {
-            delete(n); //delete node
-            root=NULL; //make node NULL
-        }
-        else if (par->left==n) //if the node is on the left side
-        {
-            delete (par->left); //delete node
-            par->left=NULL; //set pointer to NULL
-        }
-        else //if the node is on the right side
-        {
-            delete (par->right); //delete node
-            par->right=NULL; //set pointer to NULL
-        }
-    }
-    else if (n->left==NULL || n->right==NULL) //if the node has only one child
-    {
-        if (par==NULL) //if node is root
-        {
-            if (n->left==NULL) //if left child is empty
-                root=n->left; //move right child to root
-            else //if right child is empty
-                root=n->right; //move left child to root
-            delete(n); //delete node
-        }
-        else if (par->left==n) //if node is on the left side
-        {
-            if (n->left==NULL) //if left child is empty
-                par->left=n->right;// move right child to node
-            else //if right child is empty
-                par->left=n->left; //move left child to node
-            delete(n); //delete node
-        }
-        else //if node is on the right side
-        {
-            if (n->left==NULL) //if left child is empty
-                par->right=n->right; //move right child to node
-            else //if right child is empty
-                par->right=n->left; //move left child to node
-            delete(n); //delete node
-        }
-    }
-    else //if node has two children
-    {
-        node *min=findMin(n->right); //find node with minimum value on right side
-        n->word=min->word; //replace node's value with minimum
-        deleteNode(min); //delete minimum
-    }
-
-    int balance=getBalance(root); //updates balance
-    cout<<balance<<endl;
-    //cases if node is unbalanced
-    if(balance>1)
-    {
-        if (getBalance(root->left)>=0)
-            rightRotate(root);
-        else
-        {
-            root->left=leftRotate(root->left);
-            rightRotate(root);
-        }
-    }
-    if (balance<-1)
-    {
-        if (getBalance(root->right)<=0)
-            leftRotate(root);
-        else
-        {
-            root->right=rightRotate(root->right);
-            leftRotate(root);
-        }
-    }
+    n->word.freq=0; //Consider a deleted node, a node with zero frequency
 }
 
 void Avltree::deleteNode (string & s)
 {
-    node *n=search(s); //find the node with the s string
-    if (n!=NULL) //if the node is found
-        deleteNode(n); //call deleteNode function
+    if (root!=NULL && search(s)) //if the node is found
+    {
+        deleteNode(search(s)); //call deleteNode function
+    }
 }
 
 void Avltree::deleteTree (node* n)
@@ -206,7 +130,8 @@ void Avltree::preorder (node* n, ostream &o)
 {
     if(n!=NULL) //if node exists
     {
-        o<<n->word.word<<" - "<<n->word.freq<<endl; //print current node's word and frequency
+        if (n->word.freq!=0) //If a node is "deleted" then don't show it
+            o<<n->word.word<<" - "<<n->word.freq<<endl; //print current node's word and frequency
         preorder(n->left, o); //go to left subtree
         preorder(n->right, o); //then go to right subtree
     }
@@ -220,9 +145,10 @@ void Avltree::inorder (node* n, ostream &o)
 {
     if(n!=NULL) //if node exists
     {
-        preorder(n->left, o); //first go to left subtree
-        o<<n->word.word<<" - "<<n->word.freq<<endl; //print current node's word and frequency
-        preorder(n->right, o); //then go to right subtree
+        inorder(n->left, o); //first go to left subtree
+        if (n->word.freq!=0) //If a node is "deleted" then don't show it
+            o<<n->word.word<<" - "<<n->word.freq<<endl; //print current node's word and frequency
+        inorder(n->right, o); //then go to right subtree
     }
 }
 void Avltree::inorder (ostream &o)
@@ -233,10 +159,11 @@ void Avltree::inorder (ostream &o)
 void Avltree::postorder (node* n,  ostream &o)
 {
     if(n!=NULL) //if node exists
-    {    
-        preorder(n->left, o); //first go to left subtree
-        preorder(n->right, o); //then go to right subtree
-        o<<n->word.word<<" - "<<n->word.freq<<endl; //print current node's word and frequency
+    {
+        postorder(n->left, o); //first go to left subtree
+        postorder(n->right, o); //then go to right subtree
+        if (n->word.freq!=0) //If a node is "deleted" then don't show it
+            o<<n->word.word<<" - "<<n->word.freq<<endl; //print current node's word and frequency
     }
 }
 void Avltree::postorder (ostream &o)
@@ -249,6 +176,7 @@ node* Avltree::findMin(node* n)
     while (n->left!=NULL) //go to furthest left node
         n=n->left;
     return n; //return smallest node
+
 }
 node* Avltree::findMin()
 {
@@ -275,18 +203,12 @@ int Avltree::getNodeFreq(node* n)
     return n->word.freq; //return frequency of the node
 }
 
-int max(int a, int b)
-{
-    return (a>b)?a:b;
-}
-
-node* Avltree::leftRotate(node* n)
+node* Avltree::leftRotate(node* n) //Simple Left Rotation
 {
     if (n==root)
-       { 
-           //cout<<"Root changed from "<<root->word.word<<" to "<<n->right->word.word<<endl;
-           root=n->right;
-        }
+    {
+        root=n->right;
+    }
     node *t=n->right;
     node *t2=t->left;
 
@@ -296,13 +218,12 @@ node* Avltree::leftRotate(node* n)
     return t;
 }
 
-node* Avltree::rightRotate(node* n)
+node* Avltree::rightRotate(node* n) //Simple Right Rotation
 {
     if (n==root)
-        {
-            //cout<<"Root changed from "<<root->word.word<<" to "<<n->left->word.word<<endl;
-            root=n->left;
-        }
+    {
+        root=n->left;
+    }
     node *t=n->left;
     node *t2=t->right;
 
@@ -312,24 +233,24 @@ node* Avltree::rightRotate(node* n)
     return t;
 }
 
-int Avltree::getheight(node* n)
+int Avltree::getHeight(node* n)
 {
     if (n==NULL)
         return 0;
-    int left=0, right=0;
-    left=1+getheight(n->left);
-    right=1+getheight(n->right);
-    return left>right?left:right;
+    int left=0, right=0; //Initialize 2 variables for two children
+    left=1+getHeight(n->left); //Plus 1 for current node
+    right=1+getHeight(n->right); //Plus 1 for current node
+    return left>right?left:right; //Find and return the maximum of two children
 }
-int Avltree::getheight()
+int Avltree::getHeight()
 {
-    return getheight(root);
+    return getHeight(root); //start from root
 }
 
 int Avltree::getBalance(node* n)
 {
     if(n!=NULL)//if node exists
-        return (getheight(n->left)-getheight(n->right));
+        return (getHeight(n->left)-getHeight(n->right)); //return the difference between two children
     return 0;
 }
 int Avltree::getBalance()
