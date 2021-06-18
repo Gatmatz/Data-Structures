@@ -205,32 +205,32 @@ int Avltree::getNodeFreq(node* n)
 
 node* Avltree::leftRotate(node* n) //Simple Left Rotation
 {
-    if (n==root)
+    if (n==root) //check if root rotates
     {
-        root=n->right;
+        root=n->right; //set right child to root
     }
-    node *t=n->right;
-    node *t2=t->left;
+    node *t=n->right; //helping nodes
+    node *t2=t->left; 
 
-    t->left=n;
+    t->left=n; //perform left rotation
     n->right=t2;
 
-    return t;
+    return t; //return new root of rotation
 }
 
 node* Avltree::rightRotate(node* n) //Simple Right Rotation
 {
-    if (n==root)
+    if (n==root) //check if root rotates
     {
-        root=n->left;
+        root=n->left; //set left child to root
     }
-    node *t=n->left;
+    node *t=n->left; //helping nodes
     node *t2=t->right;
 
-    t->right=n;
+    t->right=n; //perform right rotation
     n->left=t2;
 
-    return t;
+    return t; //return new root of rotation
 }
 
 int Avltree::getHeight(node* n)
