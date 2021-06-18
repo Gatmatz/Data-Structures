@@ -1,15 +1,15 @@
-#include "Avltree.h"
+#include "AvlTree.h"
 #include <iostream>
 #include <string>
 
 using namespace std;
 
-Avltree::Avltree()  //empty constructor
+AvlTree::AvlTree()  //empty constructor
 {
     root=NULL; //sets root to NULL
 }
 
-node* Avltree::insert(string & s, node* n)
+node* AvlTree::insert(string & s, node* n)
 {
     if (s.compare(n->word.word)>=0) //checks if the string s is bigger than the node
     {
@@ -62,7 +62,7 @@ node* Avltree::insert(string & s, node* n)
     return n; //if balanced return unchanged node
 }
 
-void Avltree::insert(string & s)
+void AvlTree::insert(string & s)
 {
     if (search(s)==NULL) //If word hasn't been inserted
     {
@@ -83,7 +83,7 @@ void Avltree::insert(string & s)
         search(s)->word.freq++; //Increase the frequency by one
 }
 
-node* Avltree::search(string & s, node* n)
+node* AvlTree::search(string & s, node* n)
 {
     if (n==NULL) //if it is a NULL node return NULL
         return NULL;
@@ -94,17 +94,17 @@ node* Avltree::search(string & s, node* n)
     return search (s, n->right); //if string is bigger alphabetically go to right child
 
 }
-node* Avltree::search(string & s)
+node* AvlTree::search(string & s)
 {
     return search(s, root); //returns the node that contains this word
 }
 
-void Avltree::deleteNode (node* n)
+void AvlTree::deleteNode (node* n)
 {
     n->word.freq=0; //Consider a deleted node, a node with zero frequency
 }
 
-void Avltree::deleteNode (string & s)
+void AvlTree::deleteNode (string & s)
 {
     if (root!=NULL && search(s)) //if the node is found
     {
@@ -112,7 +112,7 @@ void Avltree::deleteNode (string & s)
     }
 }
 
-void Avltree::deleteTree (node* n)
+void AvlTree::deleteTree (node* n)
 {
     if (n!=NULL) //if the node exists
     {
@@ -121,12 +121,12 @@ void Avltree::deleteTree (node* n)
         delete n; //delete node n
     }
 }
-void Avltree::deleteTree ()
+void AvlTree::deleteTree ()
 {
     deleteTree(root); //call deleteTree function for root
 }
 
-void Avltree::preorder (node* n, ostream &o)
+void AvlTree::preorder (node* n, ostream &o)
 {
     if(n!=NULL) //if node exists
     {
@@ -136,12 +136,12 @@ void Avltree::preorder (node* n, ostream &o)
         preorder(n->right, o); //then go to right subtree
     }
 }
-void Avltree::preorder (ostream &o)
+void AvlTree::preorder (ostream &o)
 {
     preorder(root, o); //start peorder from root
 }
 
-void Avltree::inorder (node* n, ostream &o)
+void AvlTree::inorder (node* n, ostream &o)
 {
     if(n!=NULL) //if node exists
     {
@@ -151,12 +151,12 @@ void Avltree::inorder (node* n, ostream &o)
         inorder(n->right, o); //then go to right subtree
     }
 }
-void Avltree::inorder (ostream &o)
+void AvlTree::inorder (ostream &o)
 {
     inorder(root, o); //start inorder from root
 }
 
-void Avltree::postorder (node* n,  ostream &o)
+void AvlTree::postorder (node* n,  ostream &o)
 {
     if(n!=NULL) //if node exists
     {
@@ -166,44 +166,44 @@ void Avltree::postorder (node* n,  ostream &o)
             o<<n->word.word<<" - "<<n->word.freq<<endl; //print current node's word and frequency
     }
 }
-void Avltree::postorder (ostream &o)
+void AvlTree::postorder (ostream &o)
 {
     postorder(root, o); //start postorder from root
 }
 
-node* Avltree::findMin(node* n)
+node* AvlTree::findMin(node* n)
 {
     while (n->left!=NULL) //go to furthest left node
         n=n->left;
     return n; //return smallest node
 
 }
-node* Avltree::findMin()
+node* AvlTree::findMin()
 {
     return findMin(root); //start from root
 }
 
-node* Avltree::findMax(node* n)
+node* AvlTree::findMax(node* n)
 {
     while (n->right!=NULL) //go to furthest right node
         n=n->right;
     return n; //return biggest node
 }
-node* Avltree::findMax()
+node* AvlTree::findMax()
 {
     return findMax(root);//start from root
 }
 
-int Avltree::getFreq(string & s)
+int AvlTree::getFreq(string & s)
 {
     return search(s)->word.freq; //return frequency of node with the string
 }
-int Avltree::getNodeFreq(node* n)
+int AvlTree::getNodeFreq(node* n)
 {
     return n->word.freq; //return frequency of the node
 }
 
-node* Avltree::leftRotate(node* n) //Simple Left Rotation
+node* AvlTree::leftRotate(node* n) //Simple Left Rotation
 {
     if (n==root) //check if root rotates
     {
@@ -218,7 +218,7 @@ node* Avltree::leftRotate(node* n) //Simple Left Rotation
     return t; //return new root of rotation
 }
 
-node* Avltree::rightRotate(node* n) //Simple Right Rotation
+node* AvlTree::rightRotate(node* n) //Simple Right Rotation
 {
     if (n==root) //check if root rotates
     {
@@ -233,7 +233,7 @@ node* Avltree::rightRotate(node* n) //Simple Right Rotation
     return t; //return new root of rotation
 }
 
-int Avltree::getHeight(node* n)
+int AvlTree::getHeight(node* n)
 {
     if (n==NULL)
         return 0;
@@ -242,18 +242,18 @@ int Avltree::getHeight(node* n)
     right=1+getHeight(n->right); //Plus 1 for current node
     return left>right?left:right; //Find and return the maximum of two children
 }
-int Avltree::getHeight()
+int AvlTree::getHeight()
 {
     return getHeight(root); //start from root
 }
 
-int Avltree::getBalance(node* n)
+int AvlTree::getBalance(node* n)
 {
     if(n!=NULL)//if node exists
         return (getHeight(n->left)-getHeight(n->right)); //return the difference between two children
     return 0;
 }
-int Avltree::getBalance()
+int AvlTree::getBalance()
 {
     return getBalance(root); //get balance from root
 }
