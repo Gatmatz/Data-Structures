@@ -48,8 +48,6 @@ void Hash::insert(string a)
 {
     int pos=HashSearch(a); //Get the position of word
     int index;
-    if (a=="")
-        return;
     if (pos==-1) //if the word doesn't already exists in array
     {
         index=hashkey(a,capacity); //Get the right position of the inserted word
