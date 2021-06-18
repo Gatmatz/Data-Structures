@@ -14,11 +14,11 @@ SortedArray::SortedArray() //empty constructor
 SortedArray::~SortedArray() //desturctor
 {
     delete[] arr;
-}   
+}
 
 int SortedArray::search(string s) //binary search in array for word s
 {
-    int low=0, high=size-1; 
+    int low=0, high=size-1;
     int midd=0;
     while (low<=high) //while low is on the left to high
     {
@@ -59,7 +59,7 @@ void SortedArray::insert(string s) //adds word s in array
                 for (int i=0; i<size; i++)
                     temp[i]=arr[i]; //copy array to construct new
                 delete[] arr;
-                arr=temp; 
+                arr=temp;
                 R++;
             }
             //perform insertion by shifting elements to keep the array sorted
