@@ -15,12 +15,13 @@ private:
 public:
     //Constructor
     UnorderedArray();
-
+    //Destructor
+    ~UnorderedArray();
     //Functions
     int serialSearch(string); //Returns -1 if not found, otherwise the position of the word in array
     void insert(string); //Insert a word that hasn't been in array
     void Delete(string); //Delete a word from the array
-    void show(); //Print out all words of array with their frequency
+    void show(ostream&); //Print out all words of array with their frequency
     int getSize(); //Returns the size of the Array
     int getFreq(int); //Returs the frequency of a word
 
