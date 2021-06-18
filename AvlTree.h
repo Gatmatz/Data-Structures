@@ -1,12 +1,12 @@
-#ifndef avltree_h
-#define avltree_h
+#ifndef AvlTree_h
+#define AvlTree_h
 #include <iostream>
 #include <string>
 #include "moreTools.h"
 
 using namespace std;
 
-class Avltree
+class AvlTree
 {
 private:
     node* root; // root pointer
@@ -27,7 +27,7 @@ private:
     int getBalance(node*); //returns balance of node
 
 public:
-    Avltree(); //empty constructor
+    AvlTree(); //empty constructor
 
     int getHeight(); //returns the hight of the tree
 
