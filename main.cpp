@@ -5,7 +5,7 @@
 #include "UnorderedArray.h"
 #include "SortedArray.h"
 #include "BinarySearchTree.h"
-#include "Avltree.h"
+#include "AvlTree.h"
 #include "Hashing.h"
 using namespace std;
 string fixWord(string &word) //Take out capital letters and punctuation
@@ -75,7 +75,7 @@ int main(int argc, const char * argv[])
     UnorderedArray A; //An Unordered Array A
     SortedArray B; //A sorted array B
     BinarySearchTree C; //A Binary Search Tree C
-    Avltree D; //An AVL Tree D
+    AvlTree D; //An AVL Tree D
     Hash E; //A Hash Table E
     long long nofWords=0; //Variable that counts the words from text file
     ofstream results; //A stream to write the results to a text file
