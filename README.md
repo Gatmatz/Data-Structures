@@ -1,10 +1,29 @@
-# DomesProject
-1)Το header με το struct χρησιμοποιείται για να μην φτιάχνω σε κάθε κλάση διαφορετικό struct για να βάζω μέσα λέξη-συχνότητα. Οπότε έφτιαξα ένα header που ελπίζω (fingers crossed) να το κάνει include ο Παπαδόπουλος:)
-2)Γενικά οι δομές τρέχουν σε καλούς χρόνους (Στο small-file το insert κάνει κάπου στα 2-5 δευτερόλεπτα-φαντάζομαι το ίδιο θα γίνεται και στο searching).
-3)Μπορείς να χρησιμοποιήσεις τις δομές που έφτιαξα και να προσθέσεις τις παραπάνω λειτουργίες(φαντάζομαι για το AVL θα είναι 2 πράγματα παραπάνω, δεν χρειάζεται να γράψεις όλη την κλάση από την αρχή).
-4)Πρέπει επίσης να αποφασίσουμε αν θα τρέξουμε όλες τις δομές μαζί, ή μία μία (στο small-file όλα μαζί κάνουν 5 δεύτερα insert, αλλά στο μεγάλο το φοβάμαι λίγο)
-5)Το insert στο μεγάλο αρχείο στον Αταξινόμητο κάνει πολύ ώρα και δεν το είδα ποτέ να τελειώνει(ΑΛΛΑ ΔΕΝ ΚΡΑΣΑΡΕΙ!1!1), στο δυαδικό δέντρο κάνει 4 λεπτά και στο Hashing πάλι δεν το είδα να τελειώνει-ενώ θεωρητικά θα έπρεπε να τελειώνει πιο γρήγορα από όλα, λόγω μάλλον του realloc κάνει πολύ ώρα.Για search δεν είδα ακόμα χρόνους.
-6)Κάθε κλάση έχει σχόλια σχεδόν σε κάθε γραμμή (το οποίο είναι αηδιαστικό, αλλά better save than sorry) οπότε σχεδόν έχει βγει και η έκθεση. Αν χρειαστεί κάτι άλλο πάλι θα το δούμε.
+# Data Structures
+This project consists of my own implementation of basic data structures.
+The implementation refers to the structures:
+- Unordered Array
+- Ordered Array
+- Binary Search Tree
+- AVL Tree
+- Hash Array
 
-UPDATE
-8)Έγιναν μερικές μικροαλλαγές στις δομές γιατί πρόσθεσα μια μέθοδο που γυρνάει την συχνότητα μιας λέξης. 
+## Functions
+Each structure supports the following operations:
+ - Insert record
+ - Delete record
+ - Search record
+
+Especially for the Binary Search Tree and the AVL Tree more operations are supported:
+ - Find Max Record
+ - Find Min Record
+ - Preorder, Inorder, Postorder traversal
+
+## Architecture
+### Main Class
+The main class reads a .txt file which consists of a text and inserts each word to every data structure. </br>
+It then generates a Query of a random size and executes the query to each data structure. </br>
+Finally, it measures the performance (time) of each data structure to the specific query.
+### More Tools Header
+The moreTools header creates the structure of a node for the tree structures and a pair of a word and its frequency for the rest of the structures.
+### Rest of the Classes
+Each data structure consists of a class with its header and the .cpp file.
